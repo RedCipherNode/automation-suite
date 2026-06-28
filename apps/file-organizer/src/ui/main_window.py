@@ -114,6 +114,13 @@ class MainWindow:
 
         self.status_label = ctk.CTkLabel(self.status_frame, text="Ready.", anchor="w")
 
+        self.search_entry = ctk.CTkEntry(self.top_frame, placeholder_text="Search...")
+
+        ## Search Entry
+        self.search_entry = ctk.CTkEntry(
+            self.top_frame, placeholder_text="Search files..."
+        )
+
         # config layout
 
         self.top_frame.pack(
@@ -136,6 +143,8 @@ class MainWindow:
 
         self.folder_entry.pack(fill="x")
 
+        self.search_entry.pack(fill="x", pady=(10, 0))
+
         # Buttons in the action
         self.browse_button.pack(side="left")
 
@@ -156,12 +165,16 @@ class MainWindow:
 
         self.file_table.pack(fill="both", expand=True, padx=20, pady=(0, 20))
 
+        self.search_entry.pack(fill="x", pady=(10, 0))
+
     # Event Binding
     def bind_events(self) -> None:
 
         self.browse_button.configure(command=self.controller.browse_folder)
 
         self.scan_button.configure(command=self.controller.scan_folder)
+
+        self.search_entry.bind("<KeyRelease>", self.controller.search_files)
 
     # Public API
     def run(self) -> None:
@@ -208,6 +221,10 @@ class MainWindow:
                 "end",
                 values=(file.name, file.extension, self.format_size(file.size)),
             )
+
+    def get_search_text(self) -> str:
+
+        return self.search_entry.get()
 
     def set_status(self, message: str) -> None:
 
