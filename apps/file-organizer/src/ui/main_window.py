@@ -1,7 +1,7 @@
 import customtkinter as ctk
 from pathlib import Path
-
-from app.controllers.main_controller import MainController
+from src.models.file_info import FileInfo
+from src.controllers.main_controller import MainController
 
 
 class MainWindow:
@@ -90,3 +90,14 @@ class MainWindow:
 
     def run(self) -> None:
         self.root.mainloop()
+
+    def show_files(self, files: list[FileInfo]) -> None:
+
+        self.file_list.delete("1.0", "end")
+
+        for file in files:
+
+            self.file_list.insert(
+                "end",
+                f"{file.name}{file.extension}\n"
+            )

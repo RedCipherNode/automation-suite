@@ -1,5 +1,5 @@
-from app.services.folder_service import FolderService
-from app.services.file_scanner import FileScanner
+from src.services.folder_service import FolderService
+from src.services.file_scanner import FileScanner
 from pathlib import Path
 
 class MainController:
