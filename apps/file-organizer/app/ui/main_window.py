@@ -1,69 +1,49 @@
 import customtkinter as ctk
-
+from app.controllers.main_controller import MainController
 
 class MainWindow:
+    WIDTH = 1000
+    HEIGHT = 700
 
     def __init__(self) -> None:
         ctk.set_appearance_mode("Dark")
-        ctk.set_default_color_theme("blue")
 
         self.root = ctk.CTk()
 
-        self.root.title("File Organizer")
-        self.root.geometry("1000x700")
-        self.root.minsize(800, 600)
+        self.configure_window()
 
-        self.create_widgets()
+        self.controller = MainController(self)
 
-    def create_widgets(self) -> None:
+        self.folder_entry = ctk.CTkEntry(
 
-        # ===== Folder =====
+        self.root,
+            width=600
+        )
 
-        folder_frame = ctk.CTkFrame(self.root)
-
-        folder_frame.pack(fill="x", padx=20, pady=(20, 10))
-
-        self.folder_entry = ctk.CTkEntry(folder_frame)
-
-        self.folder_entry.pack(side="left", fill="x", expand=True, padx=(10, 10), pady=10)
+        self.folder_entry.pack(pady=20)
 
         browse_button = ctk.CTkButton(
-            folder_frame,
-            text="Browse"
+            self.root,
+            text="Browse",
+            command=self.controller.browse_folder
         )
 
-        browse_button.pack(side="right", padx=(0, 10), pady=10)
+        browse_button.pack()
 
-        # ===== File List =====
+    def configure_window(self) -> None:
+        self.root.title("File Organizer")
 
-        self.file_list = ctk.CTkTextbox(self.root)
-
-        self.file_list.pack(
-            fill="both",
-            expand=True,
-            padx=20,
-            pady=10
+        self.root.geometry(
+            f"{self.WIDTH}x{self.HEIGHT}"
         )
 
-        # ===== Bottom =====
-
-        bottom_frame = ctk.CTkFrame(self.root)
-
-        bottom_frame.pack(fill="x", padx=20, pady=(0, 20))
-
-        self.status_label = ctk.CTkLabel(
-            bottom_frame,
-            text="Ready"
-        )
-
-        self.status_label.pack(side="left", padx=10, pady=10)
-
-        scan_button = ctk.CTkButton(
-            bottom_frame,
-            text="Scan"
-        )
-
-        scan_button.pack(side="right", padx=10, pady=10)
+        self.root.minsize(800, 600)
 
     def run(self) -> None:
         self.root.mainloop()
+
+    def set_folder(self, folder: str) -> None:
+
+        self.folder_entry.delete(0, "end")
+        self.folder_entry.insert(0, folder)    
+        
